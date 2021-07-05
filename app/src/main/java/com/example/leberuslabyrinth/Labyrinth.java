@@ -1,14 +1,14 @@
 package com.example.leberuslabyrinth;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class Labyrinth extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SplashScreen splash = new SplashScreen(this);
-        setContentView(splash);
+        setContentView(R.layout.activity_labyrinth);
     }
 }
