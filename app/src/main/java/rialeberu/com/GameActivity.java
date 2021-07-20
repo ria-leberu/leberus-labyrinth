@@ -7,9 +7,6 @@ import android.view.Display;
 
 public class GameActivity extends Activity {
 
-    //setup gyro and accelerometer
-
-
 
     private LLView gameView;
     //Play button sends us here

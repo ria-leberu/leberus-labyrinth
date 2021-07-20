@@ -1,9 +1,12 @@
 package rialeberu.com;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -12,8 +15,14 @@ public class LLView extends  SurfaceView implements Runnable{
     volatile boolean playing;
     Thread gameThread = null;
 
+    //win state
+    private boolean win = false;
+
     //game objects
     private PlayerBall player;
+    private Goal goal;
+    private WinScreen winscreen;
+    private Wall1 wall1;
 
     //drawing
     private Paint paint;
@@ -25,6 +34,8 @@ public class LLView extends  SurfaceView implements Runnable{
     private Gyroscope gyroscope;
 
 
+
+
     public LLView(Context context, int x, int y) {
         super(context);
         //initialize drawing objects
@@ -32,6 +43,12 @@ public class LLView extends  SurfaceView implements Runnable{
         paint = new Paint();
         //initialize player ball
         player = new PlayerBall(context, x, y);
+        //initialize goal
+        goal = new Goal(context, x, y);
+        //initialize win screen
+        winscreen = new WinScreen(context, x, y);
+        //initialize walls
+        wall1 = new Wall1(context, x,y);
 
         accelerometer = new Accelerometer(context);
         gyroscope = new Gyroscope(context);
@@ -49,9 +66,6 @@ public class LLView extends  SurfaceView implements Runnable{
                     player.startLeftMoving();
                 }
 
-
-
-
                 if(ry > 1.0f) {
                     player.stopDownMoving();
                     player.startUpMoving();
@@ -60,18 +74,24 @@ public class LLView extends  SurfaceView implements Runnable{
                     player.stopUpMoving();
                     player.startDownMoving();
                 }
-
-
-
-
             }
         });
-
-
     }
 
     private void update() {
+        /*
+        if(Rect.intersects(player.getHitBox(), wall1.getHitBox())){
+
+        }
+        
+         */
+
+        if(Rect.intersects(player.getHitBox(), goal.getHitBox())){
+            win = true;
+        }
+
         player.update();
+        goal.update();
     }
 
     private void draw() {
@@ -82,8 +102,18 @@ public class LLView extends  SurfaceView implements Runnable{
             //rub out last frame
             canvas.drawColor(Color.argb(255,0,0,0));
 
+
+            //draw goal
+            canvas.drawBitmap(goal.getBitmap(), goal.getX(), goal.getY(), paint);
             //draw player
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
+            //draw wall
+            //canvas.drawBitmap(wall1.getBitmap(), wall1.getX(), wall1.getY(), paint);
+
+
+            if (win) {
+                canvas.drawBitmap(winscreen.getBitmap(), winscreen.getX(), winscreen.getY(), paint);
+            }
 
             //unlock and draw scene
             ourHolder.unlockCanvasAndPost(canvas);
@@ -127,7 +157,6 @@ public class LLView extends  SurfaceView implements Runnable{
         gameThread.start();
     }
 
-    //detect and manage phone tilt for movement
 
 
 

@@ -3,12 +3,16 @@ package rialeberu.com;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 public class PlayerBall {
 
     private Bitmap bitmap;
     private int x,y;
-    private int speed = 0;
+    private int speed;
+
+    //hit box
+    private Rect hitBox;
 
     //govern movement
     private boolean left_moving;
@@ -41,6 +45,9 @@ public class PlayerBall {
 
         minY = 0;
         maxY = screenY - bitmap.getHeight();
+
+
+        hitBox = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
 
 
     }
@@ -89,6 +96,14 @@ public class PlayerBall {
         if (x > maxX){
             x = maxX;
         }
+
+        //refresh hitbox location
+        hitBox.left = x;
+        hitBox.top = y;
+        hitBox.right = x + bitmap.getWidth();
+        hitBox.bottom = y + bitmap.getHeight();
+
+
     }
 
     public Bitmap getBitmap() {
@@ -136,10 +151,7 @@ public class PlayerBall {
         down_moving = false;
     }
 
-    public void stopAllMoving() {
-        left_moving = false;
-        right_moving = false;
-        up_moving = false;
-        right_moving = false;
+    public Rect getHitBox() {
+        return hitBox;
     }
 }

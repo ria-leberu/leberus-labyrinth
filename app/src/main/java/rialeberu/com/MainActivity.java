@@ -24,7 +24,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
 
-
         //set UI layout as the view
         setContentView(R.layout.activity_main);
 

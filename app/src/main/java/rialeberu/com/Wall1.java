@@ -5,16 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
-public class Goal {
-
+public class Wall1 {
     private Bitmap bitmap;
     private int x, y;
     private Rect hitBox;
 
-    public Goal(Context context, int screenX, int screenY) {
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.goal);
-        x = screenX - 200;
-        y = screenY - 200;
+    public Wall1(Context context, int screenX, int screenY) {
+
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.wall1);
+        x = screenX - 700;
+        y = screenY - bitmap.getHeight();
 
         //initialize hitbox
         hitBox = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
@@ -44,5 +44,6 @@ public class Goal {
     public Rect getHitBox() {
         return hitBox;
     }
+
 
 }
