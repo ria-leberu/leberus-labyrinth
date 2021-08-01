@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.util.Log;
 
 public class LLView extends  SurfaceView implements Runnable{
 
@@ -32,6 +33,9 @@ public class LLView extends  SurfaceView implements Runnable{
     //accelerometer and gyro
     private Accelerometer accelerometer;
     private Gyroscope gyroscope;
+
+    //debug
+    private boolean intersection_wall = false;
 
 
 
@@ -79,19 +83,41 @@ public class LLView extends  SurfaceView implements Runnable{
     }
 
     private void update() {
-        /*
+
         if(Rect.intersects(player.getHitBox(), wall1.getHitBox())){
+            intersection_wall = true;
+            if (player.right_moving = true) {
+                //player.right_moving = false;
+                player.left_moving = true;
+            }
+            else if (player.left_moving = true) {
+                //player.left_moving = false;
+                player.right_moving = true;
+            }
+            else if (player.up_moving = true) {
+                //player.up_moving = false;
+                player.down_moving = true;
+            }
+            else if (player.down_moving = true) {
+                //player.down_moving = false;
+                player.up_moving = true;
+            }
 
         }
-        
-         */
+        else {
+            intersection_wall = false;
+        }
 
+
+
+        //if ball reaches target, player wins
         if(Rect.intersects(player.getHitBox(), goal.getHitBox())){
             win = true;
         }
 
         player.update();
         goal.update();
+        wall1.update();
     }
 
     private void draw() {
@@ -108,7 +134,7 @@ public class LLView extends  SurfaceView implements Runnable{
             //draw player
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
             //draw wall
-            //canvas.drawBitmap(wall1.getBitmap(), wall1.getX(), wall1.getY(), paint);
+            canvas.drawBitmap(wall1.getBitmap(), wall1.getX(), wall1.getY(), paint);
 
 
             if (win) {
@@ -117,6 +143,10 @@ public class LLView extends  SurfaceView implements Runnable{
 
             //unlock and draw scene
             ourHolder.unlockCanvasAndPost(canvas);
+
+            //debugging text
+            printDebuggingText();
+
         }
     }
 
@@ -155,6 +185,14 @@ public class LLView extends  SurfaceView implements Runnable{
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    public void printDebuggingText(){
+        Log.d("leftMoving", ""+player.left_moving);
+        Log.d("rightMoving", ""+player.right_moving);
+        Log.d("upMoving", ""+player.up_moving);
+        Log.d("downMoving", ""+player.down_moving);
+        Log.d("wallIntersection", ""+intersection_wall);
     }
 
 

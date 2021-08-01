@@ -15,10 +15,10 @@ public class PlayerBall {
     private Rect hitBox;
 
     //govern movement
-    private boolean left_moving;
-    private boolean right_moving;
-    private boolean up_moving;
-    private boolean down_moving;
+    public boolean left_moving;
+    public boolean right_moving;
+    public boolean up_moving;
+    public boolean down_moving;
 
     //boundaries
     private int minX;
